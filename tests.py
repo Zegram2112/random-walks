@@ -106,13 +106,10 @@ class FieldTestCase(unittest.TestCase):
         self.assertTrue(self.d1 in results)
         self.assertTrue(self.d2 in results)
         self.assertEqual(
-            type(results[self.d1][0]), tuple
-        )
-        self.assertEqual(
-            len(results[self.d1]), 2
+            type(results[self.d1][0]), Vector
         )
         self.assertNotEqual(
-            results[self.d1][1], (0, 0)
+            results[self.d1][1], Vector(0, 0)
         )
 
 

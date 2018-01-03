@@ -75,11 +75,11 @@ class Field:
     def simulate(self, steps):
         results = {}
         for drunk in self.drunks:
-            results[drunk] = [tuple(drunk.location)]
+            results[drunk] = [drunk.location]
         for i in range(steps):
             self.move_drunks()
             for drunk in self.drunks:
-                results[drunk].append(tuple(drunk.location))
+                results[drunk].append(drunk.location)
         return results
 
 
@@ -91,7 +91,7 @@ class SimAnalizer:
         stdevs = {}
         for drunk, positions in sim_results.items():
             abs_distances = [
-                (x**2 + y**2)**0.5 for x, y in positions
+                abs(vector) for vector in positions
             ]
             means[drunk] = round(mean(abs_distances), 2)
             stdevs[drunk] = round(stdev(abs_distances), 2)
@@ -101,7 +101,7 @@ class SimAnalizer:
     @staticmethod
     def plot_path(sim_results):
         plt.figure(1)
-        means, stdevs = SimPlotter.mean_stdev(sim_results)
+        means, stdevs = SimAnalizer.mean_stdev(sim_results)
         for drunk, positions in sim_results.items():
             x, y = zip(*positions)
             name = 'Drunk {}'.format(drunk.id)
