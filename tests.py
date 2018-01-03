@@ -118,17 +118,26 @@ class SimAnalizerTestCase(unittest.TestCase):
     def setUp(self):
         self.d1 = Drunk(1, 1)
         self.d2 = Drunk(0, -2)
-
-    def test_abs_results(self):
-        sim_results = {
+        self.sim_results = {
             self.d1: [Vector(0, 0), Vector(1, 0), Vector(1, 1)],
             self.d2: [Vector(0, 0), Vector(0, -1), Vector(0, -2)]
         }
-        abs_results = SimA.abs_results(sim_results)
-        self.assertEqual(
-            abs_results,
-            {self.d1: [0, 1, (2)**0.5], self.d2: [0, 1, 2]}
+        self.abs_results = {
+            self.d1: [0, 1, (2)**0.5],
+            self.d2: [0, 1, 2]
+        }
+
+    def test_abs_results(self):
+        abs_distances = SimA.abs_results(self.sim_results)
+        self.assertEqual( abs_distances, self.abs_results
         )
+
+    def test_means(self):
+        means = SimA.means(self.abs_results)
+        self.assertAlmostEqual(
+            means[self.d1], (1 + (2)**0.5) / 3
+        )
+
 
 
 if __name__ == '__main__':
