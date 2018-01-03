@@ -113,6 +113,13 @@ class FieldTestCase(unittest.TestCase):
             results[self.d1][1], Vector(0, 0)
         )
 
+    def test_reset(self):
+        self.f.move_drunks()
+        self.f.reset()
+        self.assertEqual(
+            self.d1.location, Vector(0, 0)
+        )
+
 
 class SimAnalizerTestCase(unittest.TestCase):
 

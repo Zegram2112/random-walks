@@ -64,9 +64,11 @@ class Field:
 
     def __init__(self):
         self.drunks = []
+        self.initial_locations = {}
 
     def add_drunk(self, drunk):
         self.drunks.append(drunk)
+        self.initial_locations[drunk] = drunk.location
 
     def move_drunks(self):
         for drunk in self.drunks:
@@ -81,6 +83,10 @@ class Field:
             for drunk in self.drunks:
                 results[drunk].append(drunk.location)
         return results
+
+    def reset(self):
+        for drunk in self.drunks:
+            drunk.location = self.initial_locations[drunk]
 
 
 class SimAnalizer:
