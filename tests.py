@@ -1,5 +1,6 @@
 import unittest
 from randomwalk import Vector, Drunk, Field, SimAnalizer as SimA
+import statistics
 
 
 class VectorTestCase(unittest.TestCase):
@@ -136,6 +137,14 @@ class SimAnalizerTestCase(unittest.TestCase):
         means = SimA.means(self.abs_results)
         self.assertAlmostEqual(
             means[self.d1], (1 + (2)**0.5) / 3
+        )
+
+    def test_stdevs(self):
+        stdevs = SimA.stdevs(self.abs_results)
+        mean = (1 + (2) ** 0.5) / 3
+        self.assertAlmostEqual(
+            stdevs[self.d1],
+            statistics.stdev(self.abs_results[self.d1])
         )
 
 

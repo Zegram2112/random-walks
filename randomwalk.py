@@ -113,6 +113,12 @@ class SimAnalizer:
             means[drunk] = mean(distances)
         return means
 
+    @staticmethod
+    def stdevs(abs_results):
+        stdevs = {}
+        for drunk, distances in abs_results.items():
+            stdevs[drunk] = stdev(distances)
+        return stdevs
 
     @classmethod
     def plot_path(cls, sim_results):
