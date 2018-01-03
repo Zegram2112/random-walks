@@ -37,14 +37,21 @@ class Vector:
     def __abs__(self):
         return (self.x ** 2 + self.x ** 2) ** 0.5
 
+    def __iter__(self):
+        return iter((self.x, self.y))
+
 
 class Drunk:
 
+    next_id = 0
+
     def __init__(self, x=0, y=0):
+        self.id = Drunk.next_id
         self.location = Vector(x, y)
+        Drunk.next_id += 1
 
     def __repr__(self):
-        return '<Drunk: {}>'.format(self.location)
+        return '<Drunk {}: {}>'.format(self.id, self.location)
 
     def take_step(self):
         possible_movements = [(-1, 0), (1, 0), (0, 1), (0, -1)]
@@ -63,6 +70,16 @@ class Field:
     def move_drunks(self):
         for drunk in self.drunks:
             drunk.take_step()
+
+    def simulate(self, steps):
+        results = {}
+        for drunk in self.drunks:
+            results[drunk] = [tuple(drunk.location)]
+        for i in range(steps):
+            self.move_drunks()
+            for drunk in self.drunks:
+                results[drunk].append(tuple(drunk.location))
+        return results
 
 
 class FieldPlotter:

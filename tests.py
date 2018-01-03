@@ -46,6 +46,11 @@ class VectorTestCase(unittest.TestCase):
             Vector(), Vector(0, 0)
         )
 
+    def test_tuple_conversion(self):
+        self.assertEqual(
+            tuple(Vector(1, -2)), (1, -2)
+        )
+
 
 class DrunkTestCase(unittest.TestCase):
 
@@ -54,7 +59,9 @@ class DrunkTestCase(unittest.TestCase):
 
     def test_repr(self):
         self.assertEqual(
-            repr(Drunk(1, 1)), '<Drunk: (1, 1)>'
+            repr(self.drunk), '<Drunk {}: (0, 0)>'.format(
+                self.drunk.id
+            )
         )
 
     def test_default_cero(self):
@@ -75,19 +82,38 @@ class DrunkTestCase(unittest.TestCase):
                     )
                 )
 
+    def test_automatic_id(self):
+        self.assertNotEqual(Drunk().id, Drunk().id)
+
 
 class FieldTestCase(unittest.TestCase):
 
+    def setUp(self):
+        self.d1 = Drunk()
+        self.d2 = Drunk(1, 1)
+        self.f = Field()
+        self.f.add_drunk(self.d1)
+        self.f.add_drunk(self.d2)
+
     def test_move_drunks(self):
-        d1 = Drunk()
-        d2 = Drunk(1, 1)
-        f = Field()
-        f.add_drunk(d1)
-        f.add_drunk(d2)
-        v1, v2 = d1.location, d2.location
-        f.move_drunks()
-        if d1.location == v1 or d2.location == v2:
+        v1, v2 = self.d1.location, self.d2.location
+        self.f.move_drunks()
+        if self.d1.location == v1 or self.d2.location == v2:
             self.fail()
+
+    def test_sim_results(self):
+        results = self.f.simulate(1)
+        self.assertTrue(self.d1 in results)
+        self.assertTrue(self.d2 in results)
+        self.assertEqual(
+            type(results[self.d1][0]), tuple
+        )
+        self.assertEqual(
+            len(results[self.d1]), 2
+        )
+        self.assertNotEqual(
+            results[self.d1][1], (0, 0)
+        )
 
 
 if __name__ == '__main__':
