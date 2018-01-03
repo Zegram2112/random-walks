@@ -95,18 +95,6 @@ class SimAnalizer:
         return abs_distances
 
     @staticmethod
-    def mean_stdev(sim_results):
-        means = {}
-        stdevs = {}
-        for drunk, positions in sim_results.items():
-            abs_distances = [
-                abs(vector) for vector in positions
-            ]
-            means[drunk] = round(mean(abs_distances), 2)
-            stdevs[drunk] = round(stdev(abs_distances), 2)
-        return means, stdevs
-
-    @staticmethod
     def means(abs_results):
         means = {}
         for drunk, distances in abs_results.items():
@@ -123,7 +111,9 @@ class SimAnalizer:
     @classmethod
     def plot_path(cls, sim_results):
         plt.figure(1)
-        means, stdevs = cls.mean_stdev(sim_results)
+        abs_results = cls.abs_results(sim_results)
+        means = cls.means(abs_results)
+        stdevs = cls.stdevs(abs_results)
         for drunk, positions in sim_results.items():
             x, y = zip(*positions)
             name = 'Drunk {}'.format(drunk.id)
