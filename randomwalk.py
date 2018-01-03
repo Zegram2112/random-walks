@@ -46,18 +46,26 @@ class Drunk:
 
     next_id = 0
 
-    def __init__(self, x=0, y=0):
+    def __init__(self, x=0, y=0, possible_movements=None):
         self.id = Drunk.next_id
         self.location = Vector(x, y)
+        if possible_movements is None:
+            self.possible_movements = [
+                Vector(x, y) for x, y in [
+                        (-1, 0), (1, 0), (0, 1), (0, -1)
+                    ]
+                ]
+        else:
+            self.possible_movements = [
+                Vector(x, y) for x, y in possible_movements
+            ]
         Drunk.next_id += 1
 
     def __repr__(self):
         return '<Drunk {}: {}>'.format(self.id, self.location)
 
     def take_step(self):
-        possible_movements = [(-1, 0), (1, 0), (0, 1), (0, -1)]
-        possible_vectors = [Vector(x, y) for x, y in possible_movements]
-        self.location += random.choice(possible_vectors)
+        self.location += random.choice(self.possible_movements)
 
 
 class Field:
@@ -75,6 +83,7 @@ class Field:
             drunk.take_step()
 
     def simulate(self, steps):
+        self.reset()
         results = {}
         for drunk in self.drunks:
             results[drunk] = [drunk.location]
