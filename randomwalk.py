@@ -1,5 +1,6 @@
 import random
 import matplotlib.pyplot as plt
+from statistics import mean, stdev
 
 
 class Vector:
@@ -82,17 +83,31 @@ class Field:
         return results
 
 
-class FieldPlotter:
+class SimAnalizer:
 
     @staticmethod
-    def plot(field, steps):
+    def mean_stdev(sim_results):
+        means = {}
+        stdevs = {}
+        for drunk, positions in sim_results.items():
+            abs_distances = [
+                (x**2 + y**2)**0.5 for x, y in positions
+            ]
+            means[drunk] = round(mean(abs_distances), 2)
+            stdevs[drunk] = round(stdev(abs_distances), 2)
+        return means, stdevs
+
+
+    @staticmethod
+    def plot_path(sim_results):
         plt.figure(1)
-        positions = []
-        for i in range(steps):
-            for drunk in field.drunks:
-                d_location = drunk.location
-                positions.append((d_location.x, d_location.y))
-            field.move_drunks()
-        x, y = zip(*positions)
-        plt.plot(x, y)
+        means, stdevs = SimPlotter.mean_stdev(sim_results)
+        for drunk, positions in sim_results.items():
+            x, y = zip(*positions)
+            name = 'Drunk {}'.format(drunk.id)
+            label_str = '{}\nMean: {}\nStdev: {}'.format(
+                name, means[drunk], stdevs[drunk]
+            )
+            plt.plot(x, y, label=label_str)
+        plt.legend()
         plt.show()

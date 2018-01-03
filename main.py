@@ -1,7 +1,8 @@
-from randomwalk import Field, Vector, Drunk, FieldPlotter
+from randomwalk import Field, Drunk, SimAnalizer
 
 if __name__ == '__main__':
     f = Field()
-    d = Drunk()
-    f.add_drunk(d)
-    FieldPlotter.plot(f, 100000)
+    f.add_drunk(Drunk())
+    f.add_drunk(Drunk())
+    f.add_drunk(Drunk())
+    SimAnalizer.plot_path(f.simulate(100000))
