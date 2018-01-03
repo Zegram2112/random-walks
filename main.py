@@ -5,4 +5,4 @@ if __name__ == '__main__':
     f.add_drunk(Drunk())
     f.add_drunk(Drunk())
     f.add_drunk(Drunk())
-    SimAnalizer.plot_path(f.simulate(100000))
+    SimAnalizer.plot_path(f.simulate(10000))

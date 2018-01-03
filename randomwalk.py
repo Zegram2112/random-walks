@@ -85,6 +85,8 @@ class Field:
 
 class SimAnalizer:
 
+    linewidth = 0.4
+
     @staticmethod
     def mean_stdev(sim_results):
         means = {}
@@ -98,16 +100,16 @@ class SimAnalizer:
         return means, stdevs
 
 
-    @staticmethod
-    def plot_path(sim_results):
+    @classmethod
+    def plot_path(cls, sim_results):
         plt.figure(1)
-        means, stdevs = SimAnalizer.mean_stdev(sim_results)
+        means, stdevs = cls.mean_stdev(sim_results)
         for drunk, positions in sim_results.items():
             x, y = zip(*positions)
             name = 'Drunk {}'.format(drunk.id)
             label_str = '{}\nMean: {}\nStdev: {}'.format(
                 name, means[drunk], stdevs[drunk]
             )
-            plt.plot(x, y, label=label_str)
+            plt.plot(x, y, label=label_str, linewidth=cls.linewidth)
         plt.legend()
         plt.show()
