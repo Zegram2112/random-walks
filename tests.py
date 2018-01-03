@@ -1,5 +1,5 @@
 import unittest
-from randomwalk import Vector, Drunk, Field
+from randomwalk import Vector, Drunk, Field, SimAnalizer as SimA
 
 
 class VectorTestCase(unittest.TestCase):
@@ -110,6 +110,24 @@ class FieldTestCase(unittest.TestCase):
         )
         self.assertNotEqual(
             results[self.d1][1], Vector(0, 0)
+        )
+
+
+class SimAnalizerTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.d1 = Drunk(1, 1)
+        self.d2 = Drunk(0, -2)
+
+    def test_abs_results(self):
+        sim_results = {
+            self.d1: [Vector(0, 0), Vector(1, 0), Vector(1, 1)],
+            self.d2: [Vector(0, 0), Vector(0, -1), Vector(0, -2)]
+        }
+        abs_results = SimA.abs_results(sim_results)
+        self.assertEqual(
+            abs_results,
+            {self.d1: [0, 1, (2)**0.5], self.d2: [0, 1, 2]}
         )
 
 

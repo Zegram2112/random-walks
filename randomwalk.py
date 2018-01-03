@@ -36,7 +36,7 @@ class Vector:
         return self + (-1 * other)
 
     def __abs__(self):
-        return (self.x ** 2 + self.x ** 2) ** 0.5
+        return (self.x ** 2 + self.y ** 2) ** 0.5
 
     def __iter__(self):
         return iter((self.x, self.y))
@@ -86,6 +86,13 @@ class Field:
 class SimAnalizer:
 
     linewidth = 0.4
+
+    @staticmethod
+    def abs_results(sim_results):
+        abs_distances = {}
+        for drunk, positions in sim_results.items():
+            abs_distances[drunk] = [abs(v) for v in positions]
+        return abs_distances
 
     @staticmethod
     def mean_stdev(sim_results):
