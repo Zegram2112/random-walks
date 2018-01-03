@@ -109,7 +109,7 @@ class SimAnalizer:
         return stdevs
 
     @classmethod
-    def plot_path(cls, sim_results):
+    def plot_paths(cls, sim_results):
         plt.figure(1)
         abs_results = cls.abs_results(sim_results)
         means = cls.means(abs_results)
@@ -118,7 +118,24 @@ class SimAnalizer:
             x, y = zip(*positions)
             name = 'Drunk {}'.format(drunk.id)
             label_str = '{}\nMean: {}\nStdev: {}'.format(
-                name, means[drunk], stdevs[drunk]
+                name, round(means[drunk], 2), round(stdevs[drunk], 2)
+            )
+            plt.plot(x, y, label=label_str, linewidth=cls.linewidth)
+        plt.legend()
+        plt.show()
+
+    @classmethod
+    def plot_distances(cls, sim_results):
+        plt.figure(2)
+        abs_results = cls.abs_results(sim_results)
+        means = cls.means(abs_results)
+        stdevs = cls.stdevs(abs_results)
+        for drunk, distances in abs_results.items():
+            x = list(range(len(distances)))
+            y = distances
+            name = 'Drunk {}'.format(drunk.id)
+            label_str = '{}\nMean: {}\nStdev: {}'.format(
+                name, round(means[drunk], 2), round(stdevs[drunk], 2)
             )
             plt.plot(x, y, label=label_str, linewidth=cls.linewidth)
         plt.legend()
