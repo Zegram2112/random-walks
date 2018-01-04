@@ -1,6 +1,6 @@
 import random
 import matplotlib.pyplot as plt
-from statistics import mean, stdev
+import numpy as np
 
 
 class Vector:
@@ -40,6 +40,9 @@ class Vector:
 
     def __iter__(self):
         return iter((self.x, self.y))
+
+    def array(self):
+        return np.array([self.x, self.y])
 
 
 class Drunk:
@@ -91,6 +94,8 @@ class Field:
             self.move_drunks()
             for drunk in self.drunks:
                 results[drunk].append(drunk.location)
+        for drunk in results:
+            results[drunk] = np.array(results[drunk])
         return results
 
     def reset(self):
@@ -106,21 +111,21 @@ class SimAnalizer:
     def abs_results(sim_results):
         abs_distances = {}
         for drunk, positions in sim_results.items():
-            abs_distances[drunk] = [abs(v) for v in positions]
+            abs_distances[drunk] = abs(positions)
         return abs_distances
 
     @staticmethod
     def means(abs_results):
         means = {}
         for drunk, distances in abs_results.items():
-            means[drunk] = mean(distances)
+            means[drunk] = np.mean(distances)
         return means
 
     @staticmethod
     def stdevs(abs_results):
         stdevs = {}
         for drunk, distances in abs_results.items():
-            stdevs[drunk] = stdev(distances)
+            stdevs[drunk] = np.std(distances)
         return stdevs
 
     @classmethod

@@ -1,6 +1,6 @@
 import unittest
 from randomwalk import Vector, Drunk, Field, SimAnalizer as SimA
-import statistics
+import numpy as np
 
 
 class VectorTestCase(unittest.TestCase):
@@ -50,6 +50,13 @@ class VectorTestCase(unittest.TestCase):
     def test_tuple_conversion(self):
         self.assertEqual(
             tuple(Vector(1, -2)), (1, -2)
+        )
+
+    def test_array(self):
+        self.assertTrue(
+            np.array_equal(
+                Vector(1, 2).array(), np.array([1, 2])
+            )
         )
 
 
@@ -127,17 +134,21 @@ class SimAnalizerTestCase(unittest.TestCase):
         self.d1 = Drunk(1, 1)
         self.d2 = Drunk(0, -2)
         self.sim_results = {
-            self.d1: [Vector(0, 0), Vector(1, 0), Vector(1, 1)],
-            self.d2: [Vector(0, 0), Vector(0, -1), Vector(0, -2)]
+            self.d1: np.array([Vector(0, 0), Vector(1, 0), Vector(1, 1)]),
+            self.d2: np.array([Vector(0, 0), Vector(0, -1), Vector(0, -2)]),
         }
         self.abs_results = {
-            self.d1: [0, 1, (2)**0.5],
-            self.d2: [0, 1, 2]
+            self.d1: np.array([0, 1, (2)**0.5]),
+            self.d2: np.array([0, 1, 2]),
         }
 
     def test_abs_results(self):
         abs_distances = SimA.abs_results(self.sim_results)
-        self.assertEqual( abs_distances, self.abs_results
+        self.assertTrue(
+            np.array_equal(
+                abs_distances[self.d1],
+                self.abs_results[self.d1]
+            )
         )
 
     def test_means(self):
@@ -151,7 +162,7 @@ class SimAnalizerTestCase(unittest.TestCase):
         mean = (1 + (2) ** 0.5) / 3
         self.assertAlmostEqual(
             stdevs[self.d1],
-            statistics.stdev(self.abs_results[self.d1])
+            np.std(self.abs_results[self.d1])
         )
 
 
