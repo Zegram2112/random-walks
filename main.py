@@ -16,11 +16,17 @@ if __name__ == '__main__':
         s += "\nf = Field()"
         s += "\nd = Drunk()"
         s += "\nf.add_drunk(d)"
+        s += "\nsim = f.simulate(10000)"
+        s += "\nabs = SimAnalizer.abs_results(sim)"
+        print(s)
         def timedrunk(sentence):
             print(sentence)
             print(timeit(sentence, setup=s, number=1))
             print("-" * 40)
         timedrunk("d.take_step()")
         timedrunk("f.simulate(100000)")
-        timedrunk("SimAnalizer.plot_paths(f.simulate(100000))")
-        timedrunk("SimAnalizer.plot_distances(f.simulate(100000))")
+        timedrunk("SimAnalizer.abs_results(sim)")
+        timedrunk("SimAnalizer.means(abs)")
+        timedrunk("SimAnalizer.stdevs(abs)")
+        timedrunk("SimAnalizer.plot_paths(sim)")
+        timedrunk("SimAnalizer.plot_distances(sim)")
