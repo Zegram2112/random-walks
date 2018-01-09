@@ -98,6 +98,21 @@ class Field:
             results[drunk] = np.array(results[drunk])
         return results
 
+    def sim_walks(self, walks, steps):
+        sim_results = {}
+        for drunk in self.drunks:
+            sim_results[drunk] = []
+        for i in range(walks):
+            walk_results = self.walk(steps)
+            for drunk in walk_results:
+                sim_results[drunk].append(
+                    walk_results[drunk][-1]
+                )
+        for drunk in sim_results:
+            sim_results[drunk] = np.array(sim_results[drunk])
+        return sim_results
+
+
     def reset(self):
         for drunk in self.drunks:
             drunk.location = self.initial_locations[drunk]
@@ -142,7 +157,6 @@ class WalkAnalizer:
             )
             plt.plot(x, y, label=label_str, linewidth=cls.linewidth)
         plt.legend()
-        plt.show()
 
     @classmethod
     def plot_distances(cls, walk_results):
@@ -159,4 +173,7 @@ class WalkAnalizer:
             )
             plt.plot(x, y, label=label_str, linewidth=cls.linewidth)
         plt.legend()
+
+    @classmethod
+    def show_plots(cls):
         plt.show()

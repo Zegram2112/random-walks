@@ -8,9 +8,10 @@ if __name__ == '__main__':
         f.add_drunk(Drunk())
         f.add_drunk(Drunk())
         f.add_drunk(Drunk())
-        sim_results = f.walk(10000)
+        walk_results = f.walk(10000)
         WalkAnalizer.plot_paths(sim_results)
         WalkAnalizer.plot_distances(sim_results)
+        WalkAnalizer.show_plots()
     elif "timeit" in argv:
         s = "from randomwalk import Field, Drunk, WalkAnalizer, Vector"
         s += "\nf = Field()"

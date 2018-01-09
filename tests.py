@@ -127,6 +127,12 @@ class FieldTestCase(unittest.TestCase):
             self.d1.location, Vector(0, 0)
         )
 
+    def test_sim_results(self):
+        results = self.f.sim_walks(10, 100)
+        self.assertTrue(
+            isinstance(results[self.d1][0], Vector)
+        )
+
 
 class WalkAnalizerTestCase(unittest.TestCase):
 
