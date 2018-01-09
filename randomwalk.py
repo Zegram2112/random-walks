@@ -85,7 +85,7 @@ class Field:
         for drunk in self.drunks:
             drunk.take_step()
 
-    def simulate(self, steps):
+    def walk(self, steps):
         self.reset()
         results = {}
         for drunk in self.drunks:
@@ -103,14 +103,14 @@ class Field:
             drunk.location = self.initial_locations[drunk]
 
 
-class SimAnalizer:
+class WalkAnalizer:
 
     linewidth = 0.4
 
     @staticmethod
-    def abs_results(sim_results):
+    def abs_results(walk_results):
         abs_distances = {}
-        for drunk, positions in sim_results.items():
+        for drunk, positions in walk_results.items():
             abs_distances[drunk] = abs(positions)
         return abs_distances
 
@@ -129,12 +129,12 @@ class SimAnalizer:
         return stdevs
 
     @classmethod
-    def plot_paths(cls, sim_results):
+    def plot_paths(cls, walk_results):
         plt.figure(1)
-        abs_results = cls.abs_results(sim_results)
+        abs_results = cls.abs_results(walk_results)
         means = cls.means(abs_results)
         stdevs = cls.stdevs(abs_results)
-        for drunk, positions in sim_results.items():
+        for drunk, positions in walk_results.items():
             x, y = zip(*positions)
             name = 'Drunk {}'.format(drunk.id)
             label_str = '{}\nMean: {}\nStdev: {}'.format(
@@ -145,9 +145,9 @@ class SimAnalizer:
         plt.show()
 
     @classmethod
-    def plot_distances(cls, sim_results):
+    def plot_distances(cls, walk_results):
         plt.figure(2)
-        abs_results = cls.abs_results(sim_results)
+        abs_results = cls.abs_results(walk_results)
         means = cls.means(abs_results)
         stdevs = cls.stdevs(abs_results)
         for drunk, distances in abs_results.items():

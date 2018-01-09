@@ -1,5 +1,5 @@
 import unittest
-from randomwalk import Vector, Drunk, Field, SimAnalizer as SimA
+from randomwalk import Vector, Drunk, Field, WalkAnalizer as WalkA
 import numpy as np
 
 
@@ -109,8 +109,8 @@ class FieldTestCase(unittest.TestCase):
         if self.d1.location == v1 or self.d2.location == v2:
             self.fail()
 
-    def test_sim_results(self):
-        results = self.f.simulate(1)
+    def test_walk_results(self):
+        results = self.f.walk(1)
         self.assertTrue(self.d1 in results)
         self.assertTrue(self.d2 in results)
         self.assertEqual(
@@ -128,7 +128,7 @@ class FieldTestCase(unittest.TestCase):
         )
 
 
-class SimAnalizerTestCase(unittest.TestCase):
+class WalkAnalizerTestCase(unittest.TestCase):
 
     def setUp(self):
         self.d1 = Drunk(1, 1)
@@ -143,7 +143,7 @@ class SimAnalizerTestCase(unittest.TestCase):
         }
 
     def test_abs_results(self):
-        abs_distances = SimA.abs_results(self.sim_results)
+        abs_distances = WalkA.abs_results(self.sim_results)
         self.assertTrue(
             np.array_equal(
                 abs_distances[self.d1],
@@ -152,13 +152,13 @@ class SimAnalizerTestCase(unittest.TestCase):
         )
 
     def test_means(self):
-        means = SimA.means(self.abs_results)
+        means = WalkA.means(self.abs_results)
         self.assertAlmostEqual(
             means[self.d1], (1 + (2)**0.5) / 3
         )
 
     def test_stdevs(self):
-        stdevs = SimA.stdevs(self.abs_results)
+        stdevs = WalkA.stdevs(self.abs_results)
         mean = (1 + (2) ** 0.5) / 3
         self.assertAlmostEqual(
             stdevs[self.d1],
