@@ -118,62 +118,75 @@ class Field:
             drunk.location = self.initial_locations[drunk]
 
 
-class WalkAnalizer:
+class WalkAnalysis:
 
     linewidth = 0.4
 
-    @staticmethod
-    def abs_results(walk_results):
-        abs_distances = {}
-        for drunk, positions in walk_results.items():
-            abs_distances[drunk] = abs(positions)
-        return abs_distances
+    def __init__(self, walk_results):
+        self.walk_results = walk_results
+        self._abs_results = None
+        self._means = None
+        self._stdevs = None
 
-    @staticmethod
-    def means(abs_results):
-        means = {}
-        for drunk, distances in abs_results.items():
-            means[drunk] = np.mean(distances)
-        return means
+    @property
+    def abs_results(self):
+        if self._abs_results is None:
+            abs_distances = {}
+            for drunk, positions in self.walk_results.items():
+                abs_distances[drunk] = abs(positions)
+            self._abs_results = abs_distances
+            return abs_distances
+        else:
+            return self._abs_results
 
-    @staticmethod
-    def stdevs(abs_results):
-        stdevs = {}
-        for drunk, distances in abs_results.items():
-            stdevs[drunk] = np.std(distances)
-        return stdevs
+    @property
+    def means(self):
+        if self._means is None:
+            means = {}
+            for drunk, distances in self.abs_results.items():
+                means[drunk] = np.mean(distances)
+            self._means = means
+            return means
+        else:
+            return self._means
 
-    @classmethod
-    def plot_paths(cls, walk_results):
+    @property
+    def stdevs(self):
+        if self._stdevs is None:
+            stdevs = {}
+            for drunk, distances in self.abs_results.items():
+                stdevs[drunk] = np.std(distances)
+            self._stdevs = stdevs
+            return stdevs
+        else:
+            return self._stdevs
+
+    def plot_paths(self):
         plt.figure(1)
-        abs_results = cls.abs_results(walk_results)
-        means = cls.means(abs_results)
-        stdevs = cls.stdevs(abs_results)
-        for drunk, positions in walk_results.items():
+        for drunk, positions in self.walk_results.items():
             x, y = zip(*positions)
             name = 'Drunk {}'.format(drunk.id)
             label_str = '{}\nMean: {}\nStdev: {}'.format(
-                name, round(means[drunk], 2), round(stdevs[drunk], 2)
+                name,
+                round(self.means[drunk], 2),
+                round(self.stdevs[drunk], 2)
             )
-            plt.plot(x, y, label=label_str, linewidth=cls.linewidth)
+            plt.plot(x, y, label=label_str, linewidth=self.linewidth)
         plt.legend()
 
-    @classmethod
-    def plot_distances(cls, walk_results):
+    def plot_distances(self):
         plt.figure(2)
-        abs_results = cls.abs_results(walk_results)
-        means = cls.means(abs_results)
-        stdevs = cls.stdevs(abs_results)
-        for drunk, distances in abs_results.items():
+        for drunk, distances in self.abs_results.items():
             x = list(range(len(distances)))
             y = distances
             name = 'Drunk {}'.format(drunk.id)
             label_str = '{}\nMean: {}\nStdev: {}'.format(
-                name, round(means[drunk], 2), round(stdevs[drunk], 2)
+                name,
+                round(self.means[drunk], 2),
+                round(self.stdevs[drunk], 2)
             )
-            plt.plot(x, y, label=label_str, linewidth=cls.linewidth)
+            plt.plot(x, y, label=label_str, linewidth=self.linewidth)
         plt.legend()
 
-    @classmethod
-    def show_plots(cls):
+    def show_plots(self):
         plt.show()
