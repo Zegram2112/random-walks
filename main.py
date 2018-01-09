@@ -9,8 +9,11 @@ if __name__ == '__main__':
         f.add_drunk(Drunk())
         f.add_drunk(Drunk())
         walk_results = f.walk(10000)
+        WalkAnalizer.plot_paths(walk_results)
+        WalkAnalizer.plot_distances(walk_results)
+        WalkAnalizer.show_plots()
+        sim_results = f.sim_walks(1000, 100)
         WalkAnalizer.plot_paths(sim_results)
-        WalkAnalizer.plot_distances(sim_results)
         WalkAnalizer.show_plots()
     elif "timeit" in argv:
         s = "from randomwalk import Field, Drunk, WalkAnalizer, Vector"
@@ -31,3 +34,4 @@ if __name__ == '__main__':
         timedrunk("WalkAnalizer.stdevs(abs)")
         timedrunk("WalkAnalizer.plot_paths(sim)")
         timedrunk("WalkAnalizer.plot_distances(sim)")
+        timedrunk("f.sim_walks(1000, 1000)")
