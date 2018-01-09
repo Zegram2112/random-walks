@@ -1,32 +1,33 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 class WalkAnalysis:
 
     linewidth = 0.4
 
     def __init__(self, walk_results):
         self.walk_results = walk_results
-        self._abs_results = None
+        self._distances = None
         self._means = None
         self._stdevs = None
 
     @property
-    def abs_results(self):
-        if self._abs_results is None:
-            abs_distances = {}
+    def distances(self):
+        if self._distances is None:
+            distances = {}
             for drunk, positions in self.walk_results.items():
-                abs_distances[drunk] = abs(positions)
-            self._abs_results = abs_distances
-            return abs_distances
+                distances[drunk] = abs(positions)
+            self._distances = distances
+            return distances
         else:
-            return self._abs_results
+            return self._distances
 
     @property
     def means(self):
         if self._means is None:
             means = {}
-            for drunk, distances in self.abs_results.items():
+            for drunk, distances in self.distances.items():
                 means[drunk] = np.mean(distances)
             self._means = means
             return means
@@ -37,7 +38,7 @@ class WalkAnalysis:
     def stdevs(self):
         if self._stdevs is None:
             stdevs = {}
-            for drunk, distances in self.abs_results.items():
+            for drunk, distances in self.distances.items():
                 stdevs[drunk] = np.std(distances)
             self._stdevs = stdevs
             return stdevs
@@ -59,7 +60,7 @@ class WalkAnalysis:
 
     def plot_distances(self):
         plt.figure(2)
-        for drunk, distances in self.abs_results.items():
+        for drunk, distances in self.distances.items():
             x = list(range(len(distances)))
             y = distances
             name = 'Drunk {}'.format(drunk.id)

@@ -35,7 +35,7 @@ if __name__ == '__main__':
             print("-" * 40)
         timedrunk("d.take_step()")
         timedrunk("f.walk(1000)")
-        timedrunk("an.abs_results")
+        timedrunk("an.distances")
         timedrunk("an.means")
         timedrunk("an.stdevs")
         timedrunk("an.plot_paths()")

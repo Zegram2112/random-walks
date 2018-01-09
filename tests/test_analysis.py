@@ -12,18 +12,18 @@ class WalkAnalysisTestCase(unittest.TestCase):
             self.d1: np.array([Vector(0, 0), Vector(1, 0), Vector(1, 1)]),
             self.d2: np.array([Vector(0, 0), Vector(0, -1), Vector(0, -2)]),
         }
-        self.abs_results = {
+        self.distances = {
             self.d1: np.array([0, 1, (2)**0.5]),
             self.d2: np.array([0, 1, 2]),
         }
         self.analysis = WalkAnalysis(self.walk_results)
 
-    def test_abs_results(self):
-        abs_distances = self.analysis.abs_results
+    def test_distances(self):
+        distances = self.analysis.distances
         self.assertTrue(
             np.array_equal(
-                abs_distances[self.d1],
-                self.abs_results[self.d1]
+                distances[self.d1],
+                self.distances[self.d1]
             )
         )
 
@@ -38,5 +38,5 @@ class WalkAnalysisTestCase(unittest.TestCase):
         mean = (1 + (2) ** 0.5) / 3
         self.assertAlmostEqual(
             stdevs[self.d1],
-            np.std(self.abs_results[self.d1])
+            np.std(self.distances[self.d1])
         )
