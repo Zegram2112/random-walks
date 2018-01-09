@@ -1,6 +1,9 @@
-from randomwalk import Field, Drunk, WalkAnalysis
+from randomwalk.core import Field, Drunk
+from randomwalk.analysis import WalkAnalysis
 from sys import argv
 from timeit import timeit
+from tests import test_core, test_analysis
+import unittest
 
 if __name__ == '__main__':
     if "examples" in argv:
@@ -18,7 +21,8 @@ if __name__ == '__main__':
         analysis.plot_paths()
         analysis.show_plots()
     elif "timeit" in argv:
-        s = "from randomwalk import Field, Drunk, WalkAnalysis, Vector"
+        s = "from randomwalk.core import Field, Drunk, Vector"
+        s += "\nfrom randomwalk.analysis import WalkAnalysis"
         s += "\nf = Field()"
         s += "\nd = Drunk()"
         s += "\nf.add_drunk(d)"
@@ -37,3 +41,10 @@ if __name__ == '__main__':
         timedrunk("an.plot_paths()")
         timedrunk("an.plot_distances()")
         timedrunk("f.sim_walks(1000, 1000)")
+    elif "test" in argv:
+        loader = unittest.TestLoader()
+        suite = unittest.TestSuite()
+        suite.addTests(loader.loadTestsFromModule(test_core))
+        suite.addTests(loader.loadTestsFromModule(test_analysis))
+        runner = unittest.TextTestRunner()
+        result = runner.run(suite)
