@@ -97,10 +97,6 @@ class SimAnalysis(Analysis):
                 round(self.means[drunk], 2),
                 round(self.stdevs[drunk], 2)
             )
-            plt.scatter(
-                x, y, label=label_str,
-                alpha=(
-                    0.9/(len(self.positions.values()) * len(self.positions))
-                    )
-                )
+            alpha = 0.5 / len(self.positions)
+            plt.scatter(x, y, label=label_str, alpha=alpha)
         plt.legend()
