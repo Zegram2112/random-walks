@@ -85,7 +85,6 @@ class Field:
             drunk.take_step()
 
     def walk(self, steps):
-        self.reset()
         results = {}
         for drunk in self.drunks:
             results[drunk] = [drunk.location]
@@ -95,6 +94,7 @@ class Field:
                 results[drunk].append(drunk.location)
         for drunk in results:
             results[drunk] = np.array(results[drunk])
+        self.reset()
         return results
 
     def sim_walks(self, walks, steps):

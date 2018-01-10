@@ -1,5 +1,5 @@
 from randomwalk.core import Field, Drunk
-from randomwalk.analysis import WalkAnalysis
+from randomwalk.analysis import WalkAnalysis, SimAnalysis
 from sys import argv
 from timeit import timeit
 from tests import test_core, test_analysis
@@ -17,8 +17,8 @@ if __name__ == '__main__':
         analysis.plot_distances()
         analysis.show_plots()
         sim_results = f.sim_walks(1000, 100)
-        analysis = WalkAnalysis(sim_results)
-        analysis.plot_paths()
+        analysis = SimAnalysis(sim_results)
+        analysis.plot_positions()
         analysis.show_plots()
     elif "timeit" in argv:
         s = "from randomwalk.core import Field, Drunk, Vector"

@@ -2,12 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-class WalkAnalysis:
+class Analysis:
 
-    linewidth = 0.4
-
-    def __init__(self, walk_results):
-        self.walk_results = walk_results
+    def __init__(self, results):
+        self.positions = results
         self._distances = None
         self._means = None
         self._stdevs = None
@@ -16,7 +14,7 @@ class WalkAnalysis:
     def distances(self):
         if self._distances is None:
             distances = {}
-            for drunk, positions in self.walk_results.items():
+            for drunk, positions in self.positions.items():
                 distances[drunk] = abs(positions)
             self._distances = distances
             return distances
@@ -45,9 +43,20 @@ class WalkAnalysis:
         else:
             return self._stdevs
 
+    def show_plots(self):
+        plt.show()
+
+
+class WalkAnalysis(Analysis):
+
+    linewidth = 0.4
+
+    def __init__(self, walk_positions):
+        super().__init__(walk_positions)
+
     def plot_paths(self):
         plt.figure(1)
-        for drunk, positions in self.walk_results.items():
+        for drunk, positions in self.positions.items():
             x, y = zip(*positions)
             name = 'Drunk {}'.format(drunk.id)
             label_str = '{}\nMean: {}\nStdev: {}'.format(
@@ -72,5 +81,26 @@ class WalkAnalysis:
             plt.plot(x, y, label=label_str, linewidth=self.linewidth)
         plt.legend()
 
-    def show_plots(self):
-        plt.show()
+
+class SimAnalysis(Analysis):
+
+    def __init__(self, sim_positions):
+        super().__init__(sim_positions)
+
+    def plot_positions(self):
+        plt.figure(3)
+        for drunk, positions in self.positions.items():
+            x, y = zip(*positions)
+            name = 'Drunk {}'.format(drunk.id)
+            label_str = '{}\nMean: {}\nStdev: {}'.format(
+                name,
+                round(self.means[drunk], 2),
+                round(self.stdevs[drunk], 2)
+            )
+            plt.scatter(
+                x, y, label=label_str,
+                alpha=(
+                    0.9/(len(self.positions.values()) * len(self.positions))
+                    )
+                )
+        plt.legend()
