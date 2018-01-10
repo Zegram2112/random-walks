@@ -61,16 +61,32 @@ class VectorTestCase(unittest.TestCase):
         )
 
 
+class UnitarianDrunk(Drunk):
+
+    def __init__(self, x=0, y=0):
+        super().__init__(x, y, [(1, 0), (-1, 0)])
+
+
 class DrunkTestCase(unittest.TestCase):
 
     def setUp(self):
         self.drunk = Drunk()
+        self.udrunk = UnitarianDrunk()
 
     def test_repr(self):
         self.assertEqual(
-            repr(self.drunk), '<Drunk {}: (0, 0)>'.format(
-                self.drunk.id
-            )
+            repr(self.drunk),
+            '<Drunk {}: (0, 0)>'.format(self.drunk.id)
+        )
+        self.assertEqual(
+            repr(self.udrunk),
+            '<UnitarianDrunk {}: (0, 0)>'.format(self.udrunk.id)
+        )
+
+    def test_str(self):
+        self.assertEqual(
+            str(self.udrunk),
+            'UnitarianDrunk (0, 0)'.format(self.udrunk.id)
         )
 
     def test_default_cero(self):

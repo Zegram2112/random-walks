@@ -64,7 +64,11 @@ class Drunk:
         Drunk.next_id += 1
 
     def __repr__(self):
-        return '<Drunk {}: {}>'.format(self.id, self.location)
+        return '<{} {}: {}>'.format(
+            self.__class__.__name__, self.id, self.location)
+
+    def __str__(self):
+        return '{} {}'.format(self.__class__.__name__, self.location)
 
     def take_step(self):
         self.location += random.choice(self.possible_movements)
