@@ -9,6 +9,8 @@ class Analysis:
         self._distances = None
         self._means = None
         self._stdevs = None
+        self.linewidth = None
+        self.alpha = None
 
     @property
     def distances(self):
@@ -43,28 +45,38 @@ class Analysis:
         else:
             return self._stdevs
 
+    def _plot(self, type, drunk, x, y):
+        if type == "plot":
+            f = plt.plot
+        elif type == "scatter":
+            f = plt.scatter
+        f(x, y, label=self.label(drunk),
+          alpha=self.alpha, linewidth=self.linewidth)
+
     def show_plots(self):
         plt.show()
 
+    def label(self, drunk):
+        name = 'Drunk {}'.format(drunk.id)
+        label_str = '{}\nMean: {}\nStdev: {}'.format(
+            name,
+            round(self.means[drunk], 2),
+            round(self.stdevs[drunk], 2)
+        )
+        return label_str
 
 class WalkAnalysis(Analysis):
 
-    linewidth = 0.4
-
     def __init__(self, walk_positions):
         super().__init__(walk_positions)
+        self.linewidth = 0.4
+        self.alpha = 0.8
 
     def plot_paths(self):
         plt.figure(1)
         for drunk, positions in self.positions.items():
             x, y = zip(*positions)
-            name = 'Drunk {}'.format(drunk.id)
-            label_str = '{}\nMean: {}\nStdev: {}'.format(
-                name,
-                round(self.means[drunk], 2),
-                round(self.stdevs[drunk], 2)
-            )
-            plt.plot(x, y, label=label_str, linewidth=self.linewidth)
+            self._plot("plot", drunk, x, y)
         plt.legend()
 
     def plot_distances(self):
@@ -72,13 +84,7 @@ class WalkAnalysis(Analysis):
         for drunk, distances in self.distances.items():
             x = list(range(len(distances)))
             y = distances
-            name = 'Drunk {}'.format(drunk.id)
-            label_str = '{}\nMean: {}\nStdev: {}'.format(
-                name,
-                round(self.means[drunk], 2),
-                round(self.stdevs[drunk], 2)
-            )
-            plt.plot(x, y, label=label_str, linewidth=self.linewidth)
+            self._plot("plot", drunk, x, y)
         plt.legend()
 
 
@@ -86,17 +92,11 @@ class SimAnalysis(Analysis):
 
     def __init__(self, sim_positions):
         super().__init__(sim_positions)
+        self.alpha = 0.5 / len(self.positions)
 
     def plot_positions(self):
         plt.figure(3)
         for drunk, positions in self.positions.items():
             x, y = zip(*positions)
-            name = 'Drunk {}'.format(drunk.id)
-            label_str = '{}\nMean: {}\nStdev: {}'.format(
-                name,
-                round(self.means[drunk], 2),
-                round(self.stdevs[drunk], 2)
-            )
-            alpha = 0.5 / len(self.positions)
-            plt.scatter(x, y, label=label_str, alpha=alpha)
+            self._plot("scatter", drunk, x, y)
         plt.legend()
